@@ -1,0 +1,22 @@
+---
+- hosts: aws-ssm
+  gather_facts: true
+  name: Amazon Preflight grabbing agent installer
+  become: yes
+
+  vars_files:
+    - vars/vars.yml
+
+  roles:
+    - { role: pre-flight, tags: pre-flight }
+
+- hosts: aws-ssm
+  gather_facts: false
+  name: install agent in default location and set service to enable/on
+  become: yes
+
+  vars_files:
+    - vars/vars.yml
+
+  roles:
+    - { role: aws-ssm-run, tags: aws-ssm-run }

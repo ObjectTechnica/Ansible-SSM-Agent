@@ -1,0 +1,27 @@
+---
+# Tasks with aws-ssm pre-flight
+- name: Creates Storage directory for ssm-agent
+  file: 
+      path: /tmp/ssm/
+      state: directory
+      owner: "{{ ansible_ssh_user }}"
+      group: "{{ ansible_ssh_user }}"
+      mode: 0775 
+
+- name: pre-flight - Grab latest stable ssm-agent installer
+  get_url:
+    url: https://s3.amazonaws.com/ec2-downloads-windows/SSMAgent/latest/linux_amd64/amazon-ssm-agent.rpm
+    dest: /tmp/ssm/amazon-ssm-agent.rpm
+    owner: "{{ ansible_ssh_user }}"
+    group: "{{ ansible_ssh_user }}"
+    mode: 0775
+  when: ansible_distribution == 'CentOS' or ansible_distribution == 'Red Hat Enterprise Linux'
+
+- name: pre-flight - Grab latest stable ssm-agent installer
+  get_url:
+    url: https://s3.amazonaws.com/ec2-downloads-windows/SSMAgent/latest/debian_amd64/amazon-ssm-agent.deb
+    dest: /tmp/ssm/amazon-ssm-agent.deb
+    owner: "{{ ansible_ssh_user }}"
+    group: "{{ ansible_ssh_user }}"
+    mode: 0775
+  when: ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu'

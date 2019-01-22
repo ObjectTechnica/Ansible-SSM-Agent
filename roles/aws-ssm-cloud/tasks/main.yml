@@ -1,0 +1,12 @@
+---
+# tasks file for aws-ssm
+- name: Install ssm-agent package
+  yum:
+     name: /tmp/ssm/amazon-ssm-agent.rpm
+     state: present
+  when: ansible_distribution == 'CentOS' or ansible_distribution == 'Red Hat Enterprise Linux'
+
+- name: Install ssm-agent package
+  apt:
+    deb: /tmp/ssm/amazon-ssm-agent.deb
+  when: ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu'
